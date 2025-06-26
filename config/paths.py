@@ -1,7 +1,7 @@
 from pathlib import Path   
 
 # Define the base directory
-BASE_DIR = Path(__file__).resolve().parent
+BASE_DIR = Path(__file__).resolve().parent.parent
 
 
 

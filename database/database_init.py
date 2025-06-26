@@ -1,6 +1,6 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from paths import LIBRARY_DB_PATH
+from config.paths import LIBRARY_DB_PATH
 from models.base import Base
 
 # Create an SQLite database engine. Print SQL statements for debugging.
