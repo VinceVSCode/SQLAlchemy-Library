@@ -10,6 +10,7 @@ engine = create_engine(f"sqlite:///{LIBRARY_DB_PATH}", echo=True)
 SessionLocal = sessionmaker(bind=engine)
 
 # Function to create all tables in the database
-def create_tables():
+def init_database():
     Base.metadata.create_all(bind=engine)
-    print("All tables created successfully.")
+    print("Database created successfully!")
+    
