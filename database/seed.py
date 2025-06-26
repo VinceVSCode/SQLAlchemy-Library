@@ -63,6 +63,8 @@ def seed_database():
         print("Database seeded successfully!")
 
         
-        
+if __name__ == "__main__":
+    seed_database()
+    print("Seeding complete!")
         
         

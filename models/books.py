@@ -14,7 +14,8 @@ class Book(Base):
     
     # Relationships
     author = relationship("Author", back_populates="books")
-
+    loans = relationship("Loan", back_populates="book")
+    
     def __repr__(self):
         return f"<Book(id={self.id}, title='{self.title}', author_id={self.author_id})>"
     
