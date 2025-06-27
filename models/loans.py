@@ -1,6 +1,6 @@
 from sqlalchemy import Column, Integer, DateTime, ForeignKey
 from sqlalchemy.orm import relationship
-from datetime import datetime 
+from datetime import datetime ,timedelta
 from models.base import Base
 
 class Loan(Base):
@@ -22,3 +22,16 @@ class Loan(Base):
             f", borrowed_date={self.borrowed_date}"
             f", returned_date={self.returned_date})>"
             )
+    
+    @property
+    def can_extend(self):
+        return self.returned_date is None and not hasattr(self, '_extended')
+    
+    @property
+    def extend_due_date(self, days=7):
+        # Check if the loan can be extended
+        if not self.can_extend:
+            return False
+        self._extended = True
+        self.borrowed_date += timedelta(days=days)
+        return True

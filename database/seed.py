@@ -1,6 +1,6 @@
 from database.database_init import init_database, SessionLocal
 from models import Author, Book, User, Loan
-from datetime import datetime
+from datetime import datetime,timedelta
 
 # Function to seed the database with initial data
 def seed_database():
@@ -39,8 +39,19 @@ def seed_database():
         user3 = User(name="Joel", email="joel@example.com")
 
         # Create some loans
-        loan1 = Loan(user=user1, book=hp1, borrowed_date=datetime.utcnow())
-        loan2 = Loan(user=user2, book=metamorphosis, borrowed_date=datetime.utcnow())
+        loan1 = Loan(
+        user=user1,
+        book=hp1,
+        borrowed_date=datetime.utcnow(),
+        returned_date=datetime.utcnow() + timedelta(days=14)  
+        )
+
+        loan2 = Loan(
+                    user=user2, 
+                    book=metamorphosis,
+                    borrowed_date=datetime.utcnow(),
+                    returned_date= datetime.utcnow() + timedelta(days=14)  
+                    )
 
         # add the data to the session
         session.add_all([
