@@ -7,9 +7,11 @@ session = SessionLocal()
 # 1. List all books
 print("📚 All books:")
 for book in session.query(Book).all():
-    #Get attribute to check availability
-    print(f" - {book.title} ({'Available' if getattr(book, 'is_available', False) else 'Borrowed'})")
-
+    # Display book title and available copies
+    if book.available_copies > 0:
+        print(f" - {book.title} ({book.available_copies} of {book.total_copies} available)")
+    else:
+        print(f" - {book.title} (No copies available)")
 # 2. Show all borrowed books
 print("\n📕 Borrowed books:")
 for loan in session.query(Loan).filter(Loan.returned_date == None).all():

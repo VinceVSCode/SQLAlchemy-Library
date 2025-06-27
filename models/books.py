@@ -1,6 +1,7 @@
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from models.base import Base
+from sqlalchemy import func, case
 
 class Book(Base):
     __tablename__ = "books"
@@ -11,6 +12,7 @@ class Book(Base):
     genre = Column(String, nullable=False)
     published_year = Column(Integer, nullable=False)
     is_available = Column(Boolean, default=True)  
+    total_copies = Column(Integer, default=1, nullable=False)
     
     # Relationships
     author = relationship("Author", back_populates="books")
@@ -19,3 +21,21 @@ class Book(Base):
     def __repr__(self):
         return f"<Book(id={self.id}, title='{self.title}', author_id={self.author_id})>"
     
+    # Property to count borrowed books
+    @property
+    def borrowed_count(self):
+        return sum(1 for loan in self.loans if loan.returned_date is None)
+    
+    # Property to check if the book is available
+    @property
+    def available_copies(self)-> int:
+        
+        # Calculate available copies by subtracting borrowed count from total copies else return 0
+        borrowed_count = self.borrowed_count if self.borrowed_count else 0
+        total_copies = getattr(self, 'total_copies', 0)
+        return max(int(total_copies) - int(borrowed_count), 0)
+        
+        
+    
+    
+        

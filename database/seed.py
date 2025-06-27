@@ -29,9 +29,9 @@ def seed_database():
         fahrenheit_451 = Book(title="Fahrenheit 451", author=bradbury,
                                  genre="Dystopian", published_year=1953)
         metamorphosis = Book(title="The Metamorphosis", author=kafka,
-                             genre="Surreal", published_year=1915)
+                             genre="Surreal", published_year=1915, total_copies=2)
         thus_spoke_zarathustra = Book(title="Thus Spoke Zarathustra", author=nitzsche,
-                                      genre="Philosophy", published_year=1885)
+                                      genre="Philosophy", published_year=1885, total_copies=3)
         
         # Create some users
         user1 = User(name="Mark", email="mark@example.com")
