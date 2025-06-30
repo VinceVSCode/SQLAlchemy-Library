@@ -1,6 +1,7 @@
+from controllers.report_controller import count_books_by_author, count_books_by_genre
 from controllers.user_controller import add_user, list_users
 from controllers.author_controller import add_author, list_authors
-from controllers.book_controller import add_book, list_books
+from controllers.book_controller import add_book, get_books_before_year, get_books_by_author, get_books_by_genre, get_books_by_substring, list_books
 from controllers.loan_controller import borrow_book, return_book
 
 
@@ -15,6 +16,12 @@ def main_menu():
         print("6. List Books")
         print("7. Borrow Book")
         print("8. Return Book")
+        print("9. List books by genre")
+        print("10. List books by author")
+        print("11. List books before a year")
+        print("12. List books by title keyword")
+        print("13. Show book count by genre")
+        print("14. Show book count by author")
 
         print("0. Quit")
         choice = input("Choose an option: ")
@@ -43,7 +50,7 @@ def main_menu():
 
         elif choice == "6":
             list_books()
-            
+
         elif choice == "7":
             email = input("User email: ")
             title = input("Book title: ")
@@ -54,6 +61,35 @@ def main_menu():
             title = input("Book title: ")
             return_book(email, title)
 
+        elif choice == "9":
+            genre = input("Genre: ")
+            get_books_by_genre(genre)
+
+        elif choice == "10":
+            author = input("Author name: ")
+            get_books_by_author(author)
+
+        elif choice == "11":
+            year = int(input("Enter year: "))
+            get_books_before_year(year)
+
+        elif choice == "12":
+            keyword = input("Keyword in title: ")
+            get_books_by_substring(keyword)
+        elif choice == "13":
+            genre_counts = count_books_by_genre()
+            for genre, count in genre_counts.items():
+                print(f"{genre}: {count} book(s)")
+
+        elif choice == "14":
+            author_counts = count_books_by_author()
+            for author, count in author_counts.items():
+                print(f"{author}: {count} book(s)")
+
+        elif choice == "0":
+            print("Goodbye!")
+            break
+        
         else:
             print("Invalid choice.")
 

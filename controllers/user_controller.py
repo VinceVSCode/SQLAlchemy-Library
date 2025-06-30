@@ -27,3 +27,23 @@ def list_users():
             print(f" - {user.name} ({user.email})")
     finally:
         session.close()
+
+def get_users_with_email_domain(domain: str):
+    """Fetch all users with a specific email domain."""
+    session = SessionLocal()
+    if not domain.startswith('@'):
+        print("Please provide a valid email domain starting with '@'.")
+        return []
+    try:
+        pattersn = f"%{domain}"
+        users = session.query(User).filter(User.email.like(pattersn)).all()
+        if not users:
+            print(f"No users found with the email domain: {domain}")
+        else:
+            print(f"Found {len(users)} user(s) with the email domain: {domain}")
+        return users
+    except Exception as e:
+        print(f"Error fetching users: {e}")
+        return []
+    finally:
+        session.close()
