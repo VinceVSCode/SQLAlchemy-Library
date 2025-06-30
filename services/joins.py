@@ -19,3 +19,17 @@ def get_borrowed_books_with_users():
     finally:
         session.close()
 
+def get_users_and_their_books():
+    session =  SessionLocal()
+    try:
+        users = (
+            session.query(User)
+            .options(joinedload(User.loan).joinedload(Loan.book))
+            .all()
+        )
+        return users
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return []
+    finally:
+        session.close()

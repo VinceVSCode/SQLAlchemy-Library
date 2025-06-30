@@ -9,6 +9,7 @@ def seed_database():
     session = SessionLocal()
 
     try:
+        
         rowling = Author(name="J.K. Rowling")
         tolkien = Author(name="J.R.R. Tolkien")
         huxley = Author(name="Aldous Huxley")
