@@ -1,9 +1,10 @@
 from database.database_init import init_database, SessionLocal
 from models import Author, Book, User, Loan
 from datetime import datetime,timedelta
-
+from config.paths import DB_URL
 # Function to seed the database with initial data
 def seed_database():
+    print(f"📂 Seeding database at: {DB_URL}")
     # Create the tables
     init_database() 
     session = SessionLocal()
