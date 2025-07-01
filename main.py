@@ -22,6 +22,7 @@ def main_menu():
         print("12. List books by title keyword")
         print("13. Show book count by genre")
         print("14. Show book count by author")
+        print("15. Show most borrowed books")
 
         print("0. Quit")
         choice = input("Choose an option: ")
@@ -86,6 +87,11 @@ def main_menu():
             for author, count in author_counts.items():
                 print(f"{author}: {count} book(s)")
 
+        elif choice == "15":
+            count = int(input("How many top books to show? "))
+            top_books = get_most_borrowed_books(count)
+            for title, num in top_books:
+                print(f"{title} — borrowed {num} time(s)")
         elif choice == "0":
             print("Goodbye!")
             break
