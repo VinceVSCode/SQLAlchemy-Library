@@ -1,5 +1,5 @@
 from sqlalchemy import func
-from models import Book, Author, Loan
+from models import Book, Author, Loan, User
 from database.database_init import SessionLocal
 from typing import Optional
 
@@ -80,4 +80,24 @@ def get_most_borrowed_books(limit = 5)-> Optional[list]:
         return None
     finally:
         session.close()
-    
+
+# A function that will gather users with no loans
+def get_users_with_no_loans():
+    """Get users who have no loans.
+    Returns a list of User objects who have no associated loans.
+    """
+    session = SessionLocal()
+
+    try:
+        users_with_no_loans = (
+            session.query(User)
+            .outerjoin(Loan, User.id == Loan.user_id)
+            .filter(Loan.id.is_(None))
+            .all()
+        )
+        return users_with_no_loans
+    except Exception as e:
+        print(f"Error getting users with no loans: {e}")
+        return []
+    finally:
+        session.close()
