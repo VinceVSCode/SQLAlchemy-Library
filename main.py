@@ -1,4 +1,4 @@
-from controllers.report_controller import count_books_by_author, count_books_by_genre, get_most_borrowed_books,get_users_with_no_loans
+from controllers.report_controller import count_books_by_author, count_books_by_genre, get_most_borrowed_books,get_users_with_no_loans,get_books_never_borrowed,get_overdue_loans
 from controllers.user_controller import add_user, list_users
 from controllers.author_controller import add_author, list_authors
 from controllers.book_controller import add_book, get_books_before_year, get_books_by_author, get_books_by_genre, get_books_by_substring, list_books
@@ -24,6 +24,8 @@ def main_menu():
         print("14. Show book count by author")
         print("15. Show most borrowed books")
         print("16. List users with no loans")
+        print("17. Show books that have never been borrowed")
+        print("18. Show overdue loans")
 
         print("0. Quit")
         choice = input("Choose an option: ")
@@ -103,6 +105,24 @@ def main_menu():
             else:
                 for user in users:
                     print(f"📭 {user.name} — {user.email}")
+        elif choice == "17":
+            books = get_books_never_borrowed()
+            if not books:
+                print("📚 All books have been borrowed at least once.")
+            else:
+                print("📕 Never borrowed:")
+                for book in books:
+                    print(f"- {book.title}")
+
+        elif choice == "18":
+            loans = get_overdue_loans()
+            if not loans:
+                print("🎉 No overdue loans!")
+            else:
+                print("⚠️ Overdue Loans:")
+                for loan in loans:
+                    print(f"- {loan.book.title} borrowed by {loan.user.name} on {loan.borrowed_date}")
+
 
         elif choice == "0":
             print("Goodbye!")

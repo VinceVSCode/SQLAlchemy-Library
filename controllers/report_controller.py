@@ -2,6 +2,7 @@ from sqlalchemy import func
 from models import Book, Author, Loan, User
 from database.database_init import SessionLocal
 from typing import Optional
+from datetime import datetime,timedelta,timezone
 
 # A function that will count books by their genre
 def count_books_by_genre():
@@ -99,5 +100,44 @@ def get_users_with_no_loans():
     except Exception as e:
         print(f"Error getting users with no loans: {e}")
         return []
+    finally:
+        session.close()
+
+# A function that will get books that have never been borrowed
+def get_books_never_borrowed():
+    """Get books that have never been borrowed.
+    Returns a list of Book objects that have no associated loans.
+    """
+    session = SessionLocal()
+
+    try:
+        books_never_borrowed = (
+            session.query(Book)
+            .outerjoin(Loan, Book.id == Loan.book_id)
+            .filter(Loan.id.is_(None))
+            .all()
+        )
+        return books_never_borrowed
+    except Exception as e:
+        print(f"Error getting books never borrowed: {e}")
+        return []
+    finally:
+        session.close()
+
+# A function that will get overdue loans
+def get_overdue_loans():
+    """Get overdue loans.
+    Returns a list of Loan objects that are overdue (not returned and borrowed more than 14 days ago).
+    """
+    session = SessionLocal()
+    try:
+        now = datetime.now(timezone.utc)
+        overdue_loans = (
+            session.query(Loan)
+            .filter(Loan.returned_date.is_(None))
+            .filter(Loan.borrowed_date + timedelta(days=14) < now)
+            .all()
+        )
+        return overdue_loans
     finally:
         session.close()
