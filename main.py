@@ -1,4 +1,4 @@
-from controllers.report_controller import count_books_by_author, count_books_by_genre
+from controllers.report_controller import count_books_by_author, count_books_by_genre, get_most_borrowed_books
 from controllers.user_controller import add_user, list_users
 from controllers.author_controller import add_author, list_authors
 from controllers.book_controller import add_book, get_books_before_year, get_books_by_author, get_books_by_genre, get_books_by_substring, list_books
@@ -90,8 +90,12 @@ def main_menu():
         elif choice == "15":
             count = int(input("How many top books to show? "))
             top_books = get_most_borrowed_books(count)
-            for title, num in top_books:
-                print(f"{title} — borrowed {num} time(s)")
+            if top_books is None:
+                print("No borrowed books found.")
+            else:
+                for title, num in top_books:
+                    print(f"{title} — borrowed {num} time(s)")
+        
         elif choice == "0":
             print("Goodbye!")
             break

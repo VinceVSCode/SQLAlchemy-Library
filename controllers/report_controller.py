@@ -1,6 +1,7 @@
 from sqlalchemy import func
 from models import Book, Author, Loan
 from database.database_init import SessionLocal
+from typing import Optional
 
 # A function that will count books by their genre
 def count_books_by_genre():
@@ -57,7 +58,7 @@ def count_books_by_author():
         session.close()
     
 # A function that will get the most borrowed book, with a limit of 5
-def get_most_borrowed_book(limit = 5):
+def get_most_borrowed_books(limit = 5)-> Optional[list]:
     """Get the most borrowed book.
     Returns the title of the most borrowed book and the number of times it has been borrowed.
     If no books have been borrowed, it returns None.
