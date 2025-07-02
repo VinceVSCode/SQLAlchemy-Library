@@ -2,7 +2,6 @@
 
 # Step 0:Try to mount the data
 echo " Mounting the data "
-docker run -it -v "${PWD}/data:/app/data" sqlalchemy-app
 
 # Step 1: check if database exists.
 echo " Check whether database exists.."
