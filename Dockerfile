@@ -14,7 +14,7 @@ COPY . /app
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Make sure the script is executable
-RUN chmod +x entrypoint.sh
+RUN chmod +x init_script.sh
 
 # Use it as the container entrypoint
-CMD ["sh", "entrypoint.sh"]
+CMD ["sh", "init_script.sh"]
