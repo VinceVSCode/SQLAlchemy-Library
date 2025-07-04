@@ -3,6 +3,8 @@ from controllers.user_controller import add_user, list_users
 from controllers.author_controller import add_author, list_authors
 from controllers.book_controller import add_book, get_books_before_year, get_books_by_author, get_books_by_genre, get_books_by_substring, list_books
 from controllers.loan_controller import borrow_book, return_book
+# This is a simple CLI application for managing a library system.
+# pipreqs . --force --ignore .venv,data,__pycache__ command to generate requirements.txt
 
 
 def main_menu():
