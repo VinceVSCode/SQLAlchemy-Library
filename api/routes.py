@@ -4,7 +4,8 @@
 
 from fastapi import APIRouter, Depends
 from database.database_init import SessionLocal
-from models.books import Book
+from models import Book, User 
+
 
 router = APIRouter()
 
@@ -32,7 +33,6 @@ def get_books():
             }
             for book in books
         ]
-
 # Dependency for injecting a new database into each request
 def get_db():
     """
@@ -44,3 +44,29 @@ def get_db():
         yield db
     finally:
         db.close()
+
+# Get a list of all users
+@router.get("/users" )
+def get_users(db: Session = Depends(get_db)):
+
+    """
+    Get a list of all users.
+    This endpoint retrieves all users from the database.
+    """
+    try:
+        users = db.query(User).all()
+        return [
+            {
+                "id": user.id,
+                "name": user.name,
+                "email": user.email
+            }
+            for user in users
+        ]
+    except Exception as e:
+        return {"error": str(e)}
+
+    
+
+
+
