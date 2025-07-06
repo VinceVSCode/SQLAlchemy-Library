@@ -1,5 +1,6 @@
 # main_api.py will be the entry point for the FastAPI application.
 # It will set up the FastAPI app and include the router from the api.routes module.
+# uvicorn api.main_api:app --reload
 
 from fastapi import FastAPI
 from api.routes import router
