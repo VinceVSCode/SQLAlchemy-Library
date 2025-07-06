@@ -3,8 +3,9 @@
 # It will handle requests related to books, such as retrieving a list of books.
 
 from fastapi import APIRouter, Depends
+from sqlalchemy.orm import Session
 from database.database_init import SessionLocal
-from models import Book, User 
+from models import Book, User , Loan
 
 
 router = APIRouter()
@@ -66,7 +67,29 @@ def get_users(db: Session = Depends(get_db)):
     except Exception as e:
         return {"error": str(e)}
 
-    
+# Get loans 
+@router.get("/loans")
+def get_active_loans(db: Session = Depends(get_db)):
+    """
+    Get a list of all loans.
+    This endpoint retrieves all loans from the database.
+    """
+    try:
+        loans = db.query(Loan).filter(Loan.return_date.is_(None)).all()
+        if not loans:
+            return {"message": "No active loans found."}
+        # Return a list of loans with relevant details
+        results = []
+        for loan in loans:
+            results.append({
+            "loan_id": loan.id,
+            "book_title": loan.book.title,
+            "borrowed_by": loan.user.name,
+            "borrowed_date": loan.borrowed_date.isoformat()
+            })
+        return results
+    except Exception as e:
+        return {"error": str(e)}
 
 
 
