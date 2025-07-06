@@ -1,7 +1,17 @@
+# Dynamically add project root to sys.path. when directly run this file.
+import sys 
+from pathlib import Path
+ROOT_DIR = Path(__file__).resolve().parent.parent
+sys.path.append(str(ROOT_DIR))
+
 from database.database_init import init_database, SessionLocal
 from models import Author, Book, User, Loan
 from datetime import datetime,timedelta
 from config.paths import DB_URL
+
+
+
+
 # Function to seed the database with initial data
 def seed_database():
     print(f"📂 Seeding database at: {DB_URL}")

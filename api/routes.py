@@ -12,9 +12,9 @@ router = APIRouter()
 
 # Root endpoint for the API
 # This will return a welcome message when the root URL is accessed.
-@router.get("/")
-def read_root():
-    return {"message": "Welcome to the Library API!"}
+# @router.get("/")
+# def read_root():
+#     return {"message": "Welcome to the Library API!"}
 
 # Get a list of all books
 @router.get("/books")   
