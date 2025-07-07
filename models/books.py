@@ -2,6 +2,10 @@ from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
 from sqlalchemy.orm import relationship
 from models.base import Base
 from sqlalchemy import func, case
+from sqlalchemy.ext.declarative import declarative_base
+
+#
+Base = declarative_base()
 
 class Book(Base):
     __tablename__ = "books"
