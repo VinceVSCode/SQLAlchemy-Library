@@ -5,7 +5,7 @@ from models.base import Base
 
 # Create an SQLite database engine. Print SQL statements for debugging.
 # engine = create_engine(f"sqlite:///{LIBRARY_DB_PATH}", echo=True)
-engine = create_engine(DB_URL, echo=True)
+engine = create_engine(DB_URL, echo=True, connect_args={"check_same_thread": False})
 
 # Create a session factory 
 SessionLocal = sessionmaker(bind=engine)
@@ -17,4 +17,11 @@ Base = declarative_base()
 def init_database():
     Base.metadata.create_all(bind=engine)
     print("Database created successfully!")
-    
+
+# Function to get a new session
+def get_db():
+    db = SessionLocal()
+    try:
+        yield db
+    finally:
+        db.close()
