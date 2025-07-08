@@ -24,7 +24,7 @@ def list_users():
         if not users:
             print("⚠️ No users found.")
         for user in users:
-            print(f" - {user.name} ({user.email})")
+            print(f" - {user.username} ({user.email})")
     finally:
         session.close()
 

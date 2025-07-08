@@ -106,7 +106,7 @@ def main_menu():
                 print("Everyone has borrowed something.")
             else:
                 for user in users:
-                    print(f"📭 {user.name} — {user.email}")
+                    print(f"📭 {user.username} — {user.email}")
         elif choice == "17":
             books = get_books_never_borrowed()
             if not books:

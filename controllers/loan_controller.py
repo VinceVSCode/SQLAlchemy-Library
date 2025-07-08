@@ -27,7 +27,7 @@ def borrow_book(user_email: str, book_title: str):
         book.is_available = book.copies > 0
         session.commit()
 
-        print(f"✅ '{book.title}' borrowed by {user.name}.")
+        print(f"✅ '{book.title}' borrowed by {user.username}.")
     finally:
         session.close()
 
@@ -49,7 +49,7 @@ def return_book(user_email: str, book_title: str):
         )
 
         if not loan:
-            print(f"❌ No active loan found for '{book_title}' by {user.name}.")
+            print(f"❌ No active loan found for '{book_title}' by {user.username}.")
             return
 
         # Mark the loan as returned
@@ -58,7 +58,7 @@ def return_book(user_email: str, book_title: str):
         setattr(book, "is_available", True)
         session.commit()
 
-        print(f"✅ '{book.title}' returned by {user.name}.")
+        print(f"✅ '{book.title}' returned by {user.username}.")
     finally:
         session.close()
 
