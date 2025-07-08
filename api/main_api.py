@@ -4,9 +4,12 @@
 
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
+
 from api.routes import router
 from fastapi.responses import HTMLResponse
-import models,schemas
+import schemas
+import models
+from models import User
 from database.database_init import engine, get_db
 
 models.Base.metadata.create_all(bind=engine)
@@ -102,3 +105,30 @@ def delete_book(book_id: int, db: Session = Depends(get_db)):
     db.delete(book)
     db.commit()
     return book
+
+# USER management endpoints. (Make more modular later...)
+@app.post("/users/", response_model=schemas.UserOut)
+def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
+    """
+    Create a new user in the library system.
+    """
+    # Check if the user already exists
+    db_user = db.query(User).filter(User.email == user.email).first()
+    if db_user:
+        raise HTTPException(status_code=400, detail="User already exists")
+
+    # Create a new user instance and add it to the database
+    new_user = models.User(**user.model_dump())
+    db.add(new_user)
+    db.commit()
+    db.refresh(new_user)
+    return new_user
+
+# Get All Users
+@app.get("/users/", response_model=list[schemas.UserOut])
+def get_users(db: Session = Depends(get_db)):
+    """
+    Retrieve a list of all users in the library system.
+    """
+    users = db.query(User).all()
+    return users

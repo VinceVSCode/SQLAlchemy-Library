@@ -59,7 +59,7 @@ def get_users(db: Session = Depends(get_db)):
         return [
             {
                 "id": user.id,
-                "name": user.name,
+                "name": user.username,
                 "email": user.email
             }
             for user in users
