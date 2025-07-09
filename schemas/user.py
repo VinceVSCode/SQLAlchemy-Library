@@ -16,4 +16,10 @@ class UserOut(UserBase):
     is_active: bool
 
     class Config:
-        orm_mode = True
+        from_attributes = True
+
+#UserUpdate updating user data
+class UserUpdate(BaseModel):
+    username: str | None = Field(None, min_length=3, max_length=20, description="The username of the user. Must be between 3 and 20 characters.")
+    email: EmailStr | None = None
+    is_active: bool | None = None
