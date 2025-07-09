@@ -9,10 +9,20 @@ from api.routes import router
 from fastapi.responses import HTMLResponse
 import schemas
 import models
-from models import User
+from models.users import User
+from models.base import Base
+from models.books import Book
+from models.loans import Loan
+from models.authors import Author
+# Import the database engine and session dependency
+
+
 from database.database_init import engine, get_db
 
-models.Base.metadata.create_all(bind=engine)
+try:
+    models.Base.metadata.create_all(bind=engine)
+except Exception as e:
+    print(f"❌ DB Table Creation Failed: {e}")
 
 # Create the FastAPI application instance
 app = FastAPI()
@@ -132,3 +142,34 @@ def get_users(db: Session = Depends(get_db)):
     """
     users = db.query(User).all()
     return users
+
+# UPDATE user by ID
+@app.put("/users/{user_id}", response_model = schemas.UserOut)
+def update_user(user_id: int, updated: schemas.UserUpdate , db: Session = Depends(get_db)):
+    """
+    Update a user's details by their ID.
+    """
+    user = db.query(User).get(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    for field, value in updated.model_dump(exclude_unset=True).items():
+        setattr(user, field, value)
+    
+    db.commit()
+    db.refresh(user)
+    return user
+
+# DELETE user by ID
+@app.delete("/users/{user_id}", response_model=schemas.UserOut)
+def delete_user(user_id: int, db: Session = Depends(get_db)):
+    """
+    Delete a user by their ID.
+    """
+    user = db.query(User).get(user_id)
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+    
+    db.delete(user)
+    db.commit()
+    return user
