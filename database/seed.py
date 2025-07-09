@@ -5,7 +5,11 @@ ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT_DIR))
 
 from database.database_init import init_database, SessionLocal
-from models import Author, Book, User, Loan
+from models.authors import Author
+from models.books import Book
+from models.users import User
+from models.loans import Loan
+
 from datetime import datetime,timedelta
 from config.paths import DB_URL
 
