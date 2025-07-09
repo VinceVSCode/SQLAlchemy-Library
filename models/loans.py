@@ -12,10 +12,6 @@ class Loan(Base):
     borrowed_date = Column(DateTime, default= datetime.utcnow, nullable=False)  
     returned_date = Column(DateTime, nullable=True)  
 
-    # Relationships
-    book = relationship("Book", back_populates="loans")
-    user = relationship("User", back_populates="loans")
-
     def __repr__(self):
         return (
             f"<Loan(id={self.id}, book_id={self.book_id}, user_id={self.user_id}"
@@ -35,3 +31,7 @@ class Loan(Base):
         self._extended = True
         self.borrowed_date += timedelta(days=days)
         return True
+
+# Relationships
+Loan.book = relationship("Book", back_populates="loans")
+Loan.user = relationship("User", back_populates="loans")

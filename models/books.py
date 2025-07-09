@@ -3,8 +3,10 @@ from sqlalchemy.orm import relationship
 from models.base import Base
 from sqlalchemy import func, case
 from sqlalchemy.ext.declarative import declarative_base
+from models.authors import Author
+from models.loans import Loan
 
-#
+# Create a base class for all models
 Base = declarative_base()
 
 class Book(Base):

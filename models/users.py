@@ -13,7 +13,7 @@ class User(Base):
     is_active = Column (Boolean, default=True)
     
     # Relationships
-    loans = relationship("Loan", back_populates="user")
+    loans = relationship("Loan", back_populates="users")
 
     def __repr__(self):
         return f"<User(id={self.id}, name='{self.username}', email='{self.email}')>"
