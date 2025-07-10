@@ -3,12 +3,12 @@ from sqlalchemy.orm import relationship
 from models.base import Base
 
 
+
 class Author(Base):
     __tablename__ = "authors"
 
     id = Column(Integer, primary_key = True)
     name = Column(String, nullable = False)
     
-
-# Relationships
-Author.books = relationship("Book", back_populates="author")
+    # Relationships
+    books = relationship("Book", back_populates="author")

@@ -32,6 +32,6 @@ class Loan(Base):
         self.borrowed_date += timedelta(days=days)
         return True
 
-# Relationships
-Loan.book = relationship("Book", back_populates="loans")
-Loan.user = relationship("User", back_populates="loans")
+    # Relationships
+    book = relationship("Book", back_populates="loans")
+    user = relationship("User", back_populates="loans")
