@@ -1,22 +1,17 @@
 # Dynamically add project root to sys.path. when directly run this file.
 import sys 
 from pathlib import Path
-# Ensure the root directory is in the system path
 ROOT_DIR = Path(__file__).resolve().parent.parent
 sys.path.append(str(ROOT_DIR))
 
-# Import necessary modules and classes
 from database.database_init import init_database, SessionLocal
 from models.authors import Author
 from models.books import Book
 from models.users import User
 from models.loans import Loan
 
-from datetime import datetime,timedelta
+from datetime import datetime, timedelta
 from config.paths import DB_URL
-
-
-
 
 # Function to seed the database with initial data
 def seed_database():
@@ -26,7 +21,7 @@ def seed_database():
     session = SessionLocal()
 
     try:
-        
+        # Create authors
         rowling = Author(name="J.K. Rowling")
         tolkien = Author(name="J.R.R. Tolkien")
         huxley = Author(name="Aldous Huxley")
@@ -51,25 +46,25 @@ def seed_database():
         thus_spoke_zarathustra = Book(title="Thus Spoke Zarathustra", author=nitzsche,
                                       genre="Philosophy", published_year=1885, total_copies=3)
         
-        # Create some users
+        # Create some users - Fix: use 'username' instead of 'name'
         user1 = User(username="Mark", email="mark@example.com")
         user2 = User(username="Bob", email="bob@example.com")
         user3 = User(username="Joel", email="joel@example.com")
 
         # Create some loans
         loan1 = Loan(
-        user=user1,
-        book=hp1,
-        borrowed_date=datetime.utcnow(),
-        returned_date=datetime.utcnow() + timedelta(days=14)  
+            user=user1,
+            book=hp1,
+            borrowed_date=datetime.utcnow(),
+            returned_date=datetime.utcnow() + timedelta(days=14)  
         )
 
         loan2 = Loan(
-                    user=user2, 
-                    book=metamorphosis,
-                    borrowed_date=datetime.utcnow(),
-                    returned_date= datetime.utcnow() + timedelta(days=14)  
-                    )
+            user=user2, 
+            book=metamorphosis,
+            borrowed_date=datetime.utcnow(),
+            returned_date=datetime.utcnow() + timedelta(days=14)  
+        )
 
         # add the data to the session
         session.add_all([
@@ -96,5 +91,3 @@ def seed_database():
 if __name__ == "__main__":
     seed_database()
     print("Seeding complete!")
-        
-        
