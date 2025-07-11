@@ -31,7 +31,7 @@ def seed_database():
         orwell = Author(name="George Orwell")
         bradbury = Author(name="Ray Bradbury")
         kafka = Author(name="Franz Kafka")
-        nitzsche = Author(name="Friedrich Nietzsche")
+        nietzsche = Author(name="Friedrich Nietzsche")
 
         # Create some books
         hp1 = Book(title="Harry Potter and the Sorcerer's Stone", author=rowling,
@@ -46,7 +46,7 @@ def seed_database():
                                  genre="Dystopian", published_year=1953)
         metamorphosis = Book(title="The Metamorphosis", author=kafka,
                              genre="Surreal", published_year=1915, total_copies=2)
-        thus_spoke_zarathustra = Book(title="Thus Spoke Zarathustra", author=nitzsche,
+        thus_spoke_zarathustra = Book(title="Thus Spoke Zarathustra", author=nietzsche,
                                       genre="Philosophy", published_year=1885, total_copies=3)
         
         # Create some users
@@ -71,7 +71,7 @@ def seed_database():
 
         # add the data to the session
         session.add_all([
-            rowling, tolkien, huxley, orwell, bradbury, kafka, nitzsche,
+            rowling, tolkien, huxley, orwell, bradbury, kafka, nietzsche,
             hp1, hobbit, brave_new_world, nineteen_eighty_four,
             fahrenheit_451, metamorphosis, thus_spoke_zarathustra,
             user1, user2, user3,
