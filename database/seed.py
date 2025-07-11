@@ -15,7 +15,9 @@ from models.loans import Loan
 from datetime import datetime,timedelta
 from config.paths import DB_URL
 
-
+# Suppress warnings for cleaner output
+import warnings
+warnings.filterwarnings('ignore')
 
 
 # Function to seed the database with initial data
