@@ -11,7 +11,7 @@ engine = create_engine(DB_URL, echo=True, connect_args={"check_same_thread": Fal
 SessionLocal = sessionmaker(bind=engine)
 
 # Create a base class for declarative models
-Base = declarative_base()
+#Base = declarative_base()
 
 # Function to create all tables in the database
 def init_database():

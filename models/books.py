@@ -28,12 +28,7 @@ class Book(Base):
     
     # Property to check if the book is available
     @property
-    def available_copies(self)-> int:
+    def available_copies(self) -> int:
         # Calculate available copies by subtracting borrowed count from total copies else return 0
-        total_copies = getattr(self, 'total_copies', 0)
+        total_copies = getattr(self, "total_copies", 0)
         return max(int(total_copies) - int(self.borrowed_count), 0)
-        
-        
-    
-    
-        

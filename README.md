@@ -66,8 +66,9 @@ python main.py
 ```bash
 uvicorn api.main_api:app --reload
 Visit http://localhost:8000/docs for API docs.
+```
 
-##Overview
+## Overview
 
 - Models: Define Author, Book, User, and Loan in models/.
 - Controllers: Handle CRUD operations and some reports.
