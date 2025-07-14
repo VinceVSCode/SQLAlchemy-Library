@@ -3,7 +3,7 @@
 A small library management system built with **SQLAlchemy** and **FastAPI**.
 It provides both a command‑line interface and a REST API to manage books, authors, users, and loans.
 
-##Features
+## Features
 
 - Add and list users, authors, and books
 - Borrow and return books through a simple CLI
@@ -11,7 +11,7 @@ It provides both a command‑line interface and a REST API to manage books, auth
 - Sample seed data for testing the system
 - Docker support for easy setup
 
-##Project Structure
+## Project Structure
 ```bash
 .
 ├── api/              # FastAPI application
