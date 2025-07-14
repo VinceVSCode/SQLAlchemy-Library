@@ -4,6 +4,9 @@
 
 from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy.orm import Session
+import hashlib
+from datetime import datetime, timezone
+now = datetime.now(timezone.utc)
 
 from api.routes import router
 from fastapi.responses import HTMLResponse
@@ -55,7 +58,7 @@ def root_menu():
         </body>
     </html>
     """
-
+# ------------ Book management endpoints --------------
 # Create a new book
 @app.post("/books/", response_model=schemas.BookOut)
 def create_book(book: schemas.BookCreate, db: Session = Depends(get_db)):
@@ -116,7 +119,7 @@ def delete_book(book_id: int, db: Session = Depends(get_db)):
     db.commit()
     return book
 
-# USER management endpoints. (Make more modular later...)
+# --------USER management endpoints. --------------(Make more modular later...)
 @app.post("/users/", response_model=schemas.UserOut)
 def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     """
@@ -127,8 +130,13 @@ def create_user(user: schemas.UserCreate, db: Session = Depends(get_db)):
     if db_user:
         raise HTTPException(status_code=400, detail="User already exists")
 
-    # Create a new user instance and add it to the database
-    new_user = models.User(**user.model_dump())
+    # Create a new user instance with hashed password and add it to the database
+    hashed_password = hashlib.sha256(user.password.encode()).hexdigest()
+    new_user = models.User(
+        username=user.username,
+        email=user.email,
+        hashed_password=hashed_password,
+    )
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
@@ -173,3 +181,63 @@ def delete_user(user_id: int, db: Session = Depends(get_db)):
     db.delete(user)
     db.commit()
     return user
+
+# ----- Author Endpoints -----
+
+@app.post("/authors/", response_model=schemas.AuthorOut)
+def create_author(author: schemas.AuthorCreate, db: Session = Depends(get_db)):
+    existing = db.query(models.Author).filter(models.Author.name == author.name).first()
+    if existing:
+        raise HTTPException(status_code=400, detail="Author already exists")
+    new_author = models.Author(name=author.name)
+    db.add(new_author)
+    db.commit()
+    db.refresh(new_author)
+    return new_author
+
+
+@app.get("/authors/", response_model=list[schemas.AuthorOut])
+def read_authors(db: Session = Depends(get_db)):
+    return db.query(models.Author).all()
+
+
+# ----- Loan Endpoints -----
+
+@app.post("/loans/borrow", response_model=schemas.LoanOut)
+def borrow_book_api(loan: schemas.LoanCreate, db: Session = Depends(get_db)):
+    user = db.query(models.User).get(loan.user_id)
+    book = db.query(models.Book).get(loan.book_id)
+    if not user or not book:
+        raise HTTPException(status_code=404, detail="User or book not found")
+    if not bool(book.is_available):
+        raise HTTPException(status_code=400, detail="Book not available")
+    new_loan = models.Loan(book_id=book.id, user_id=user.id)
+    db.add(new_loan)
+    book.is_available = False
+    db.commit()
+    db.refresh(new_loan)
+    return new_loan
+
+
+@app.post("/loans/return", response_model=schemas.LoanOut)
+def return_book_api(loan: schemas.LoanCreate, db: Session = Depends(get_db)):
+    user = db.query(models.User).get(loan.user_id)
+    book = db.query(models.Book).get(loan.book_id)
+    if not user or not book:
+        raise HTTPException(status_code=404, detail="User or book not found")
+    db_loan = (
+        db.query(models.Loan)
+        .filter(
+            models.Loan.book_id == book.id,
+            models.Loan.user_id == user.id,
+            models.Loan.returned_date == None,
+        )
+        .first()
+    )
+    if not db_loan:
+        raise HTTPException(status_code=404, detail="Active loan not found")
+    setattr(db_loan, "returned_date", datetime.now(timezone.utc))
+    book.is_available = True
+    db.commit()
+    db.refresh(db_loan)
+    return db_loan
