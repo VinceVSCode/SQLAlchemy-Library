@@ -3,7 +3,7 @@ from pydantic import BaseModel, EmailStr, Field
 
 # User schemas
 class UserBase(BaseModel):
-    username: str = Field(..., min_length=3, max_length=20, description="The username of the user. Must be between 3 and 20 characters.")
+    username: str = Field(..., min_length=3, max_length=20)
     email: EmailStr
 
 # UserCreate schema
@@ -20,6 +20,14 @@ class UserOut(UserBase):
 
 #UserUpdate updating user data
 class UserUpdate(BaseModel):
-    username: str | None = Field(None, min_length=3, max_length=20, description="The username of the user. Must be between 3 and 20 characters.")
+    username: str | None = Field(None, min_length=3, max_length=20)
     email: EmailStr | None = None
     is_active: bool | None = None
+
+# UserInDB schema for internal use
+class UserInDB(UserBase):
+    id: int
+    is_active: bool
+
+    class Config:
+        from_attributes = True

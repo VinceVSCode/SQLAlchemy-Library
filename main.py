@@ -35,7 +35,8 @@ def main_menu():
         if choice == "1":
             name = input("Enter name: ")
             email = input("Enter email: ")
-            add_user(name, email)
+            password = input("Enter password: ")
+            add_user(name, email,password)
         elif choice == "2":
             list_users()
         elif choice == "3":

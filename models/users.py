@@ -7,9 +7,10 @@ class User(Base):
 
     # User fields
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String, unique=True, index = True, nullable=False)
-    email = Column(String, unique=True ,index = True, nullable=False)
-    is_active = Column (Boolean, default=True)
+    username = Column(String, unique=True, index=True, nullable=False)
+    email = Column(String, unique=True, index=True, nullable=False)
+    hashed_password = Column(String, nullable=False)
+    is_active = Column(Boolean, default=True)
     
     # Relationships
     loans = relationship("Loan", back_populates="user")
