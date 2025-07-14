@@ -1,23 +1,29 @@
+import hashlib
 from database.database_init import SessionLocal
 from models import User
 
+# Function to hash passwords
+def _hash_password(password: str) -> str:
+    return hashlib.sha256(password.encode()).hexdigest()
 
-def add_user(name: str, email: str):
+
+# Function to add a new user
+def add_user(username: str, email: str, password: str) -> None:
     session = SessionLocal()
     try:
         existing = session.query(User).filter_by(email=email).first()
         if existing:
             print(f"❗ A user with email '{email}' already exists.")
             return
-        user = User(name=name, email=email)
+        user = User(username=username, email=email, hashed_password=_hash_password(password))
         session.add(user)
         session.commit()
-        print(f"✅ User '{name}' added.")
+        print(f"✅ User '{username}' added.")
     finally:
         session.close()
 
 
-def list_users():
+def list_users() -> None:
     session = SessionLocal()
     try:
         users = session.query(User).all()
