@@ -41,7 +41,7 @@ It provides both a command‑line interface and a REST API to manage books, auth
    docker build -t sqlalchemy-app .
    ```
    
-2. ** Run the container**
+2. **Run the container**
 	```bash
 	docker run -it -v "$(pwd)/data:/app/data" sqlalchemy-app
 	```
