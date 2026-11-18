@@ -1,0 +1,20 @@
+{
+  "id": "sqlalchemy-library",
+  "title": "SQLAlchemy Library",
+  "track": "software-developer",
+  "summary": "A small library management system with a command-line interface and a REST API for books, authors, users and loans.",
+  "skills": [
+    "Python",
+    "SQLAlchemy",
+    "FastAPI",
+    "Pydantic",
+    "Docker"
+  ],
+  "repo": "https://github.com/VinceVSCode/SQLAlchemy-Library",
+  "demo_url": null,
+  "thumbnail": null,
+  "demo_media": null,
+  "run_command": null,
+  "status": "first-attempt",
+  "version": null
+}
